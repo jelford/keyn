@@ -1,67 +1,94 @@
+function _keyn_activate_link_picker() {
+    const _keyn_browser_ctl = {
+        openLink(linkElement, isNewTab) {
+            if (!isNewTab) {
+                linkElement.click();
+            } else {
+                browser.runtime.sendMessage({
+                    apiCall: {
+                        action: 'open-in-tab',
+                        url: linkElement.href
+                    }
+                });
+            }
+        }
+    }
 
-function init() {
     let state = {
         current_filter: [],
         chosen_link: [],
         last_modified: 'current_filter',
         hints: {}
     }
-    
-    function show_keyboard_filter() {
-        
-    }
 
     function target_element(hint) {
         return state.hints[hint.dataset.linkLabel].clickable;
     }
 
-    function activate(target) {
+    function activate(target, isNewTab) {
         if (target.tagName.toUpperCase() == 'INPUT') {
             target.focus();
         } else {
-            target.click();
+            _keyn_browser_ctl.openLink(target, isNewTab);
         }
     }
 
     function positionOnTopOf(a, b) {
         b.style.position = 'absolute';
         let pos = a.getBoundingClientRect();
-        b.style.left = `${pos.left}px`;
-        b.style.top = `${pos.top}px`;
+        b.style.left = `${pos.left + window.scrollX}px`;
+        b.style.top = `${pos.top + window.scrollY}px`;
         b.style.zIndex = "2147483647"; // max int - put it on top of everything
+    }
+
+    function createHintElement() {
+        let hint = document.createElement("span");
+        hint.style.fontSize = '12px';
+        hint.style.font = "monospace";
+        hint.style.backgroundColor = "rgba(255,255,0,255)";
+        hint.style.color = "rgba(0,0,0,255)";
+        hint.style.display = "flow";
+        hint.classList.add('keyn-link-picker');
+        return hint;
+    }
+    
+    function addHintTo(clickable, label) {
+        
+        let hint = createHintElement(label);
+        hint.innerText = label
+        hint.dataset.linkText = clickable.tagName.toUpperCase() == 'A' ? clickable.textContent.toLowerCase().replace(/[^a-z]/, '') : null;
+        positionOnTopOf(clickable, hint);
+
+        hint.dataset.linkLabel = label;
+        
+        document.body.appendChild(hint);
+
+        hint.parentElement.dataset.previousOverflowX = hint.parentElement.style.overflowX;
+        hint.parentElement.style.overflowX = 'visible'
+
+        state.hints[hint.dataset.linkLabel] = {
+            clickable: clickable
+        }
+    }
+
+    function isOnScreen(element) {
+        let elRect = element.getBoundingClientRect();
+        
+        return (elRect.top < window.innerHeight)
+            && (elRect.bottom > 0)
+            && (elRect.left < window.innerWidth)
+            && (elRect.right > 0);
     }
     
     function collect_links() {
         clear_hints();
 
-        let clickables = Array.from(document.getElementsByTagName("A")).concat(Array.from(document.getElementsByTagName('INPUT')));
+        let clickables = Array.from(document.getElementsByTagName("A"))
+                            .concat(Array.from(document.getElementsByTagName('INPUT'))).filter(e => isOnScreen(e));
 
         for (let i=0; i<clickables.length; ++i) {
             let clickable = clickables[i];
-            let hint = document.createElement("span");
-            positionOnTopOf(clickable, hint);
-            
-            hint.style.fontSize = '12px';
-            hint.style.font = "monospace";
-            hint.style.backgroundColor = "rgba(255,255,0,255)";
-            hint.style.color = "rgba(0,0,0,255)";
-            hint.style.display = "flow";
-
-            hint.innerText = `${i}`
-            hint.classList.add('link-picker');
-            if (clickable.tagName.toUpperCase() == 'A') {
-                hint.dataset.linkText = clickable.textContent.toLowerCase().replace(/[^a-z]/, '') 
-            }
-            hint.dataset.linkLabel = ''+i;
-            
-            document.body.appendChild(hint);
-
-            hint.parentElement.dataset.previousOverflowX = hint.parentElement.style.overflowX;
-            hint.parentElement.style.overflowX = 'visible'
-
-            state.hints[hint.dataset.linkLabel] = {
-                clickable: clickable
-            }
+            addHintTo(clickable, `${i}`);
         }
         
         cull_links();
@@ -73,48 +100,59 @@ function init() {
         h.remove();
     }
 
+    function bring_into_view(el) {
+        let theLink = target_element(el);
+        if (theLink.tagName.toUpperCase() == 'A') {
+            theLink.focus();
+        } else {
+            // Don't give focus to input elements, but we still want to see what we're selecting
+            el.scrollIntoView()
+        }
+    }
+
     function cull_links() {
         currentFilter = state.current_filter.join('');
         chosenLink = state.chosen_link.join('');
         var foundOne = false;
-        Array.from(document.getElementsByClassName('link-picker'))
-            .forEach((el, i) => {
-                if (el.dataset.linkText && el.dataset.linkText.indexOf(currentFilter) < 0) {
-                    remove_hint(el);
-                    return;
-                } else if (el.dataset.linkLabel.indexOf(chosenLink) < 0) {
-                    remove_hint(el);
-                    return;
-                }
+        hints().forEach((el, i) => {
+            if (el.dataset.linkText && el.dataset.linkText.indexOf(currentFilter) < 0) {
+                remove_hint(el);
+                return;
+            } else if (el.dataset.linkLabel.indexOf(chosenLink) < 0) {
+                remove_hint(el);
+                return;
+            }
 
-                if (foundOne) {
-                    el.style.backgroundColor = 'rgba(255,255,0,255)';
-                } else {
-                    el.style.backgroundColor = 'rgba(200, 255, 150, 255)';
-                    let theLink = target_element(el);
-                    if (theLink.tagName.toUpperCase() == 'A') {
-                        theLink.focus();
-                    } else {
-                        // Don't give focus to input elements, but we still want to see what we're selecting
-                        el.scrollIntoView()
-                    }
-                    foundOne = true;
+            if (foundOne) {
+                el.style.backgroundColor = 'rgba(255,255,0,255)';
+            } else {
+                el.style.backgroundColor = 'rgba(200, 255, 150, 255)';
+                if (state.chosen_link.length > 0 || state.current_filter.length > 0) {
+                    bring_into_view(el)
                 }
-            });
+                
+                foundOne = true;
+            }
+        });
+    }
+
+    function hints() {
+        return Array.from(
+            document.getElementsByClassName('keyn-link-picker'));
     }
 
     function clear_hints() {
-        Array.from(
-            document.getElementsByClassName('link-picker'))
-                .forEach(el => remove_hint(el));
+        hints().forEach(el => remove_hint(el));
      
     }
     
     function go(isNewTab) {
-        let selectedHint = document.getElementsByClassName('link-picker')[0];
+        let selectedHint = hints()[0];
         if (selectedHint) {
             let target = target_element(selectedHint);
-            activate(target);
+            activate(target, isNewTab);
+        } else {
+            console.log("Nothing selected");
         }
         abandon();
     }
@@ -129,16 +167,6 @@ function init() {
         if (keyName == 'Escape') {
             event.preventDefault();
             abandon();
-        } else if ('abcdefghijklmnopqrstuvwxyz'.indexOf(keyName) >= 0) {
-            event.preventDefault();
-            state.current_filter.push(keyName);
-            state.last_modified = 'current_filter';
-            cull_links();
-        } else if (/[0-9]/.test(keyName)) {
-            event.preventDefault();
-            state.chosen_link.push(keyName);
-            state.last_modified = 'chosen_link';
-            cull_links();
         } else if (keyName == 'Backspace') {
             event.preventDefault();
             state[state.last_modified].pop();
@@ -146,7 +174,16 @@ function init() {
         } else if (keyName == 'Enter') {
             go(false);
             event.preventDefault();
-        } else {
+        } else if (/^[a-z]$/.test(keyName)) {
+            event.preventDefault();
+            state.current_filter.push(keyName);
+            state.last_modified = 'current_filter';
+            cull_links();
+        } else if (/^[0-9]$/.test(keyName)) {
+            event.preventDefault();
+            state.chosen_link.push(keyName);
+            state.last_modified = 'chosen_link';
+            cull_links();
         }
     }
 
@@ -154,5 +191,4 @@ function init() {
     collect_links();
 }
 
-
-init();
+_keyn_activate_link_picker();

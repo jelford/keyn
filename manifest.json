@@ -1,20 +1,20 @@
 {
-	"manifest_version": 2,
-	"name": "keylinks",
-	"version": "0.1",
-	"description": "Navigate the world wide web with the power of your keyboard",
-	"background": {
-		"scripts": ["keylinks.js"]
-	},
-	"commands": {
-		"toggle-feature": {
-			"suggested_key": {
-				"default": "Ctrl+Period"
-			},
-			"description": "Follow a link"
-		}
-	},
-	"permissions": [
-		"activeTab"
-	]
+    "manifest_version": 2,
+    "name": "keyn",
+    "version": "0.1",
+    "description": "Navigate the world wide web with the power of your keyboard",
+    "background": {
+        "scripts": ["/js/keyn.js"]
+    },
+    "commands": {
+        "pick-clickable": {
+            "suggested_key": {
+                "default": "Ctrl+Period"
+            },
+            "description": "Click on a link or input"
+        }
+    },
+    "permissions": [
+        "activeTab"
+    ]
 }
