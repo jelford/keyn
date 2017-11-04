@@ -1,13 +1,14 @@
 function _keyn_activate_link_picker() {
     const _keyn_browser_ctl = {
-        openLink(linkElement, isNewTab) {
+        openLink(linkElement, isNewTab, isBackground) {
             if (!isNewTab) {
                 linkElement.click();
             } else {
                 browser.runtime.sendMessage({
                     apiCall: {
                         action: 'open-in-tab',
-                        url: linkElement.href
+                        url: linkElement.href,
+                        background: isBackground
                     }
                 });
             }
@@ -25,11 +26,11 @@ function _keyn_activate_link_picker() {
         return state.hints[hint.dataset.linkLabel].clickable;
     }
 
-    function activate(target, isNewTab) {
+    function activate(target, isNewTab, isBackground) {
         if (target.tagName.toUpperCase() == 'INPUT') {
             target.focus();
         } else {
-            _keyn_browser_ctl.openLink(target, isNewTab);
+            _keyn_browser_ctl.openLink(target, isNewTab, isBackground);
         }
     }
 
@@ -146,11 +147,11 @@ function _keyn_activate_link_picker() {
      
     }
     
-    function go(isNewTab) {
+    function go(isNewTab, isBackground) {
         let selectedHint = hints()[0];
         if (selectedHint) {
             let target = target_element(selectedHint);
-            activate(target, isNewTab);
+            activate(target, isNewTab, isBackground);
         } else {
             console.log("Nothing selected");
         }
@@ -172,7 +173,8 @@ function _keyn_activate_link_picker() {
             state[state.last_modified].pop();
             collect_links();
         } else if (keyName == 'Enter') {
-            go(false);
+            go(event.shiftKey, event.altKey);
+            abandon();
             event.preventDefault();
         } else if (/^[a-z]$/.test(keyName)) {
             event.preventDefault();

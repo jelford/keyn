@@ -18,6 +18,7 @@ function handleOpenInTab(openLinkParams, requester) {
 	let url = openLinkParams.url;
 	browser.tabs.create({
 		url: url,
+		active: !openLinkParams.background
 	}).catch(reason => {
 		console.log("Unable to service new tab request because", reason)
 	});
