@@ -27,8 +27,11 @@ function _keyn_activate_link_picker() {
     }
 
     function activate(target, isNewTab, isBackground) {
-        if (target.tagName.toUpperCase() == 'INPUT') {
+        const tagName = target.tagName.toUpperCase();
+        if (tagName == 'INPUT') {
             target.focus();
+        } else if (tagName == 'BUTTON') {
+            target.click();
         } else {
             _keyn_browser_ctl.openLink(target, isNewTab, isBackground);
         }
@@ -52,12 +55,21 @@ function _keyn_activate_link_picker() {
         hint.classList.add('keyn-link-picker');
         return hint;
     }
+
+    function linkTextForElement(element) {
+        const tagName = element.tagName.toUpperCase();
+        if (tagName == 'A' || tagName == 'BUTTON') {
+            return element.textContent.toLowerCase().replace(/[^a-z]/, '');
+        } else {
+            return null;
+        }
+    }
     
     function addHintTo(clickable, label) {
         
         let hint = createHintElement(label);
         hint.innerText = label
-        hint.dataset.linkText = clickable.tagName.toUpperCase() == 'A' ? clickable.textContent.toLowerCase().replace(/[^a-z]/, '') : null;
+        hint.dataset.linkText = linkTextForElement(clickable);
         positionOnTopOf(clickable, hint);
 
         hint.dataset.linkLabel = label;
@@ -85,7 +97,9 @@ function _keyn_activate_link_picker() {
         clear_hints();
 
         let clickables = Array.from(document.getElementsByTagName("A"))
-                            .concat(Array.from(document.getElementsByTagName('INPUT'))).filter(e => isOnScreen(e));
+                            .concat(Array.from(document.getElementsByTagName('INPUT')))
+                            .concat(Array.from(document.getElementsByTagName('BUTTON')))
+                            .filter(e => isOnScreen(e));
 
         for (let i=0; i<clickables.length; ++i) {
             let clickable = clickables[i];
