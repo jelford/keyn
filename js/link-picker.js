@@ -115,16 +115,6 @@ function _keyn_activate_link_picker() {
         h.remove();
     }
 
-    function bring_into_view(el) {
-        let theLink = target_element(el);
-        if (theLink.tagName.toUpperCase() == 'A') {
-            theLink.focus();
-        } else {
-            // Don't give focus to input elements, but we still want to see what we're selecting
-            el.scrollIntoView()
-        }
-    }
-
     function cull_links() {
         currentFilter = state.current_filter.join('');
         chosenLink = state.chosen_link.join('');
@@ -142,9 +132,6 @@ function _keyn_activate_link_picker() {
                 el.style.backgroundColor = 'rgba(255,255,0,255)';
             } else {
                 el.style.backgroundColor = 'rgba(200, 255, 150, 255)';
-                if (state.chosen_link.length > 0 || state.current_filter.length > 0) {
-                    bring_into_view(el)
-                }
                 
                 foundOne = true;
             }
