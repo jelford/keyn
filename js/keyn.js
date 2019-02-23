@@ -16,12 +16,24 @@ function handleCommand(command) {
 
 function handleOpenInTab(openLinkParams, requester) {
 	let url = openLinkParams.url;
-	browser.tabs.create({
-		url: url,
-		active: !openLinkParams.background
-	}).catch(reason => {
-		console.log("Unable to service new tab request because", reason)
-	});
+	browser.tabs.query({
+		active: true,
+		windowId: browser.windows.WINDOW_ID_CURRENT
+	}).then(function (activeTabs) {
+		let activeTab = activeTabs.length > 0 ? activeTabs[0] : undefined;
+		console.log("Currently active tab:", activeTab);
+		let activeTabId = activeTab ? activeTab.id : undefined;
+		let newTabParams = {
+			url: url,
+			active: !openLinkParams.background,
+			openerTabId: activeTabId
+		};
+
+		browser.tabs.create(newTabParams).catch(reason => {
+			console.log("Unable to service new tab request because", reason)
+		});
+	})
+	
 }
 
 function handleApiRequest(apiCall, sender, sendResponse) {
