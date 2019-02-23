@@ -1,7 +1,11 @@
 {
     "manifest_version": 2,
     "name": "keyn",
-    "version": "0.1",
+    "developer": {
+        "name": "James Elford",
+        "url": "https://www.jameselford.com"
+    },
+    "version": "0.2",
     "description": "Navigate the world wide web with the power of your keyboard",
     "background": {
         "scripts": ["/js/keyn.js"]
@@ -9,12 +13,23 @@
     "commands": {
         "pick-clickable": {
             "suggested_key": {
-                "default": "Ctrl+Period"
+               "default": "Ctrl+Comma"
             },
             "description": "Click on a link or input"
         }
     },
+
+    "options_ui": {
+        "page": "settings/options.html"
+    },
+
     "permissions": [
         "activeTab"
-    ]
+    ],
+
+    "applications": {
+        "gecko": {
+            "id": "keyn@firefox-extensions.jameselford.com"
+        }
+    }
 }
