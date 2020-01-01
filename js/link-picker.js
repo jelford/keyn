@@ -38,6 +38,9 @@ function _keyn_activate_link_picker() {
         const tagName = target.tagName.toUpperCase();
         if (tagName == 'INPUT') {
             target.focus();
+            if (target.type == 'radio' || target.type == 'checkbox' || target.type == 'submit') {
+                target.click();
+            }
         } else if (tagName == 'BUTTON') {
             target.click();
         } else {
