@@ -15,11 +15,19 @@ function _keyn_activate_link_picker() {
         }
     }
 
-    let state = {
-        current_filter: [],
-        chosen_link: [],
-        last_modified: 'current_filter',
-        hints: {}
+    function fresh_state() {
+        return { 
+            current_filter: [],
+            chosen_link: [],
+            last_modified: 'current_filter',
+            hints: {} 
+        };
+    }
+
+    let state = fresh_state();
+
+    function clear_state() {
+        state = fresh_state();
     }
 
     function target_element(hint) {
@@ -156,41 +164,44 @@ function _keyn_activate_link_picker() {
         } else {
             console.log("Nothing selected");
         }
-        abandon();
     }
 
     function abandon() {
-        document.removeEventListener('keydown', on_key_pressed);
+        document.removeEventListener('keydown', on_key_pressed, true);
         clear_hints();
+        clear_state();
     }
     
     function on_key_pressed(event) {
         const keyName = event.key;
+        if (event.isComposing || event.keyCode === 229) {
+            console.log("Ignoring key press due to composing");
+            // This event is part of IME composition and should be left alone
+            return;
+        }
+        event.stopPropagation();
+        event.preventDefault();
+
         if (keyName == 'Escape') {
-            event.preventDefault();
             abandon();
         } else if (keyName == 'Backspace') {
-            event.preventDefault();
             state[state.last_modified].pop();
             collect_links();
         } else if (keyName == 'Enter') {
             go(event.shiftKey, event.altKey);
             abandon();
-            event.preventDefault();
         } else if (/^[a-z]$/.test(keyName)) {
-            event.preventDefault();
             state.current_filter.push(keyName);
             state.last_modified = 'current_filter';
             cull_links();
         } else if (/^[0-9]$/.test(keyName)) {
-            event.preventDefault();
             state.chosen_link.push(keyName);
             state.last_modified = 'chosen_link';
             cull_links();
         }
     }
 
-    document.addEventListener('keydown', on_key_pressed);
+    document.addEventListener('keydown', on_key_pressed, true);
     collect_links();
 }
 
