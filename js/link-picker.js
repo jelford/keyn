@@ -71,6 +71,8 @@ function _keyn_activate_link_picker() {
         const tagName = element.tagName.toUpperCase();
         if (tagName == 'A' || tagName == 'BUTTON') {
             return element.textContent.toLowerCase().replace(/[^a-z]/, '');
+        } else if (tagName == 'IMG') {
+            return element.title;
         } else {
             return null;
         }
@@ -134,7 +136,10 @@ function _keyn_activate_link_picker() {
             if (el.dataset.linkText && el.dataset.linkText.indexOf(currentFilter) < 0) {
                 remove_hint(el);
                 return;
-            } else if (el.dataset.linkLabel.indexOf(chosenLink) < 0) {
+            } else if (!el.dataset.linkText && currentFilter) {
+                remove_hint(el);
+                return;
+            } else if (el.dataset.linkLabel.indexOf(chosenLink) != 0) {
                 remove_hint(el);
                 return;
             }
