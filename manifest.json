@@ -5,7 +5,7 @@
         "name": "James Elford",
         "url": "https://www.jameselford.com"
     },
-    "version": "0.5",
+    "version": "0.6",
     "description": "Navigate the world wide web with the power of your keyboard",
     "background": {
         "scripts": ["/js/keyn.js"]
@@ -18,11 +18,7 @@
             "description": "Click on a link or input"
         }
     },
-
-    "options_ui": {
-        "page": "settings/options.html"
-    },
-
+    
     "permissions": [
         "activeTab"
     ],
