@@ -148,7 +148,6 @@ function _keyn_activate_link_picker() {
                 el.style.backgroundColor = 'rgba(255,255,0,255)';
             } else {
                 el.style.backgroundColor = 'rgba(200, 255, 150, 255)';
-                
                 foundOne = true;
             }
         });

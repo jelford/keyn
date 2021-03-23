@@ -25,8 +25,5 @@ Follow the link with `Enter` (`Shift+Enter` for a new tab, `Alt+Enter` for a bac
 You can customize the activation key (default: `Ctrl+,`) in the addon settings screen.
 
 * Go to: `about:addons`
-* Select `keyn`
-* Select the "Preferences" tab
-* Pick a new shortcut (according to the rules on extension shortcuts [here](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands#Shortcut_values))
-
-For example, the default combination of `Ctrl+,` is specified as `Ctrl+Comma`.
+* Select the cog at the top of the list
+* Select "Manage Extension Shortcuts"
