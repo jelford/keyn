@@ -27,3 +27,23 @@ You can customize the activation key (default: `Ctrl+,`) in the addon settings s
 * Go to: `about:addons`
 * Select the cog at the top of the list
 * Select "Manage Extension Shortcuts"
+
+# developer documentation
+
+## building
+
+Build using Mozilla's [`web-ext`](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/) tool:
+
+```
+web-ext lint
+web-ext build
+```
+
+Output will be under `web-ext-artifacts` and should be compatible with Firefox or
+Chrome. 
+
+## dependencies
+
+`keyn` uses only one third-part dependency: [`webextension-polyfill`](https://github.com/mozilla/webextension-polyfill). 
+It's used in [unbundled form](https://github.com/mozilla/webextension-polyfill#basic-setup),
+downloaded into the `libs/` folder. Update by replacing with the latest version.
