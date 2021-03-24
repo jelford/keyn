@@ -5,10 +5,13 @@
         "name": "James Elford",
         "url": "https://www.jameselford.com"
     },
-    "version": "0.6",
+    "version": "0.7",
     "description": "Navigate the world wide web with the power of your keyboard",
     "background": {
-        "scripts": ["/js/keyn.js"]
+        "scripts": [
+            "./lib/browser-polyfill.js",
+            "./js/keyn.js"
+        ]
     },
     "commands": {
         "pick-clickable": {
@@ -27,5 +30,11 @@
         "gecko": {
             "id": "{da833d6b-f202-4d54-b75d-dd2a2ce1264f}"
         }
+    },
+
+    "icons": {
+        "128": "assets/keyboard_128.png",
+        "48": "assets/keyboard_48.png",
+        "16": "assets/keyboard_16.png"
     }
 }

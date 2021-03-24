@@ -1,3 +1,4 @@
+"use strict";
 
 function activateLinkPicker() {
 	browser.tabs.executeScript({

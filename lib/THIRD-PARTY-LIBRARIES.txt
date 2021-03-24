@@ -1,0 +1,3 @@
+# browser-polyfill
+source: https://github.com/mozilla/webextension-polyfill
+license: MPL
