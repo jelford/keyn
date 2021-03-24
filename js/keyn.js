@@ -2,6 +2,9 @@
 
 function activateLinkPicker() {
 	browser.tabs.executeScript({
+		file: "/lib/browser-polyfill.js"
+	});
+	browser.tabs.executeScript({
 		file: "/js/link-picker.js"
 	}).then(function(result) {
 	}, function(failure) {
