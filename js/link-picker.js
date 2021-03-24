@@ -212,4 +212,3 @@ function _keyn_activate_link_picker() {
     collect_links();
 }
 
-_keyn_activate_link_picker();
