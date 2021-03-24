@@ -1,22 +1,29 @@
 const assert = require("assert");
 const {Builder, By, Key, until} = require("selenium-webdriver");
 const firefox = require("selenium-webdriver/firefox");
+const chrome = require("selenium-webdriver/chrome");
 const path = require('path');
 
 const testPage = path.resolve(__dirname, 'test-page.html');
 const linkPickerSelector = By.className("keyn-link-picker");
 
 describe("link-picker", function() {
-    this.timeout(5000); // Takes time to start the browser
+    this.timeout(10000); // Takes time to start the browser
 
     var driver;
-    // const driver = await new Builder().forBrowser("firefox").setFirefoxOptions(options).build();
     before("setup browser", async function() {
-        let options = new firefox.Options();
-        options.headless();
-        driver = await new Builder().forBrowser("firefox").setFirefoxOptions(options).build();
-    });
+        let ffOptions = new firefox.Options();
+        ffOptions.headless();
 
+        let chromeOptions = new chrome.Options();
+        chromeOptions.headless();
+
+        driver = await new Builder()
+            .forBrowser("firefox")
+            .setFirefoxOptions(ffOptions)
+            .setChromeOptions(chromeOptions)
+            .build();
+    });
 
     it("should display link picker hints", async function() {
         await navigateToTopPage();
@@ -30,10 +37,10 @@ describe("link-picker", function() {
         await navigateToTopPage();
         await activateLinkPicker();
 
-        // "b" is only contained in one of the two links
-        await driver.actions().sendKeys("b", Key.ENTER).perform();
+        await driver.actions().sendKeys("s").perform();
+        await driver.actions().sendKeys(Key.ENTER).perform();
 
-        await driver.wait(until.titleIs("Test Page B"));
+        await driver.wait(until.titleIs("Test Page S"), 10000);
     });
 
     it("can navigate to first test page", async function() {
@@ -57,7 +64,7 @@ describe("link-picker", function() {
         await driver.wait(untilNotFound(linkPickerSelector), 1000);
     });
 
-    afterEach("clear contest", async function() {
+    afterEach("clear context", async function() {
         if (typeof driver !== 'undefined') {
             await driver.navigate().refresh();
         }
@@ -103,8 +110,9 @@ describe("link-picker", function() {
         `);
         await driver.wait(async function (d) {
             return await d.executeScript("return typeof _keyn_activate_link_picker !== 'undefined';");
-        }, 1000);
+        }, 2000);
 
         await driver.executeScript("_keyn_activate_link_picker();");
+        await driver.wait(until.elementLocated(linkPickerSelector), 1000);
     }
 })
