@@ -19,7 +19,7 @@ describe("link-picker", function() {
         chromeOptions.headless();
 
         driver = await new Builder()
-            .forBrowser("firefox")
+            .forBrowser("chrome")
             .setFirefoxOptions(ffOptions)
             .setChromeOptions(chromeOptions)
             .build();
