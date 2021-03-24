@@ -1,0 +1,32 @@
+{
+  "name": "keyn",
+  "version": "1.0.0",
+  "description": "navigate the world wide web with the power of your keyboard",
+  "main": "karma.conf.js",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib",
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^8.3.2",
+    "selenium-webdriver": "^4.0.0-beta.2"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jelford/keyn.git"
+  },
+  "keywords": [
+    "keyboard"
+  ],
+  "author": "James Elford",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/jelford/keyn/issues"
+  },
+  "homepage": "https://github.com/jelford/keyn#readme"
+}
