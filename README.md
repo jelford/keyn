@@ -4,6 +4,8 @@
 
 Install it from [here](https://addons.mozilla.org/en-GB/firefox/addon/keyn).
 
+![screenshot of wikipedia page about browser extensions, with links highlighted by keyn](docs/keyn-filter-chrome-webstore.png)
+
 ## usage
 
 Press `Ctrl+,` to show nav hints:
