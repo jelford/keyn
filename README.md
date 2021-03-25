@@ -39,14 +39,12 @@ You can customize the activation key (default: `Ctrl+,`) in the addon settings s
 ## dev setup
 
 You will need Firefox, Chrome, their respective Webdriver plugins (for testng), and the normal Node stuff.
-For your convenience, `Containerfile` will set you up a sensible working environment:
+For convenience you can use [this toolbox](https://github.com/jelford/webdev-toolbox):
 
 ```
-podman build -t keyndev .
-toolbox create -i keyndev -c keyndev
-toolbox enter keyndev
-
-# npm install, npm test, etc.
+toolbox create -i ghcr.io/jelford/webdev-toolbox:latest -c webdev
+toolbox enter webdev
+npm install
 ```
 
 ## building
