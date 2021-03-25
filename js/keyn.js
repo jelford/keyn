@@ -7,7 +7,10 @@ function activateLinkPicker() {
 	browser.tabs.executeScript({
 		file: "/js/link-picker.js"
 	}).then(function(result) {
-	}, function(failure) {
+		return browser.tabs.executeScript({
+			code: "_keyn_activate_link_picker();"
+		});
+	}).error(function(failure) {
 		console.log("Script injection failed:", failure);
 	});
 }

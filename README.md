@@ -32,6 +32,19 @@ You can customize the activation key (default: `Ctrl+,`) in the addon settings s
 
 # developer documentation
 
+## dev setup
+
+You will need Firefox, Chrome, their respective Webdriver plugins (for testng), and the normal Node stuff.
+For your convenience, `Containerfile` will set you up a sensible working environment:
+
+```
+podman build -t keyndev .
+toolbox create -i keyndev -c keyndev
+toolbox enter keyndev
+
+# npm install, npm test, etc.
+```
+
 ## building
 
 Build using Mozilla's [`web-ext`](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/) tool:
