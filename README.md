@@ -1,8 +1,12 @@
 # keyn
 
+[![Build and Test](https://github.com/jelford/keyn/actions/workflows/build.yml/badge.svg)](https://github.com/jelford/keyn/actions/workflows/build.yml)
+
 `keyn` is a browser extension that adds keyboard navigation.
 
-Install it from [here](https://addons.mozilla.org/en-GB/firefox/addon/keyn).
+Install it from:
+- Firefox: [here](https://addons.mozilla.org/en-GB/firefox/addon/keyn)
+- Chrome: [here](https://chrome.google.com/webstore/detail/hadckfabmbpghnjbnfollclmdmokeohc?authuser=0&hl=en-GB)
 
 ![screenshot of wikipedia page about browser extensions, with links highlighted by keyn](docs/keyn-filter-chrome-webstore.png)
 
