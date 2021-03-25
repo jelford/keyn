@@ -8,7 +8,7 @@ const testPage = path.resolve(__dirname, 'test-page.html');
 const linkPickerSelector = By.className("keyn-link-picker");
 
 describe("link-picker", function() {
-    this.timeout(10000); // Takes time to start the browser
+    this.timeout(20000); // Takes time to start the browser
 
     var driver;
     before("setup browser", async function() {
