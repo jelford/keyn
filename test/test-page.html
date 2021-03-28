@@ -5,17 +5,12 @@
         This is a test page with some links on it
         <ul>
             <!-- 
-                You might be wondering why they're called "a" and "s" instead 
-                of "a" and "b". The reason is that there is an issue in the
-                selenium chrome web driver where it doesn't seem to be translating
-                non-standard keyboard inputs correctly. In particular, I use a
-                workman keyboard, where "b" is in the position normally occupied
-                by "t". So driver.actions().sendKeys("b").perform() results in
-                Chrome receiving a "t" key event.
+            chromedriver sends the wrong inputs to javascript listeners when operating
+	    with non-US keyboard layout; see: https://bugs.chromium.org/p/chromedriver/issues/detail?id=3760
 
-                "s" is on the same place in both the QWERTY and Workman layouts,
-                so the issue goes away.
-            -->
+	    I use workman, where `a` and `s` both happen to be in the same location as
+	    QWERTY.
+	    -->
             <li><a href="test-page-a.html">page a</a></li>
             <li><a href="test-page-s.html">page s</a></li>
         </ul>
