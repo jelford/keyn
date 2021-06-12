@@ -20,4 +20,4 @@ jobs:
     - run: SELENIUM_BROWSER=${{ matrix.browser }} npm test
     - uses: ouzi-dev/commit-status-updater@v1.1.0
       with:
-        status: "build"
+        name: "build"
