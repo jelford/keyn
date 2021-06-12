@@ -59,6 +59,19 @@ web-ext build
 Output will be under `web-ext-artifacts` and should be compatible with Firefox or
 Chrome. 
 
+## releasing
+
+`keyn` uses [bumpversion](https://pypi.org/project/bumpversion/) and a python wrapper to document/automate the release
+
+```
+./release.py patch # or major/minor
+```
+This will:
+- Run lints
+- Run `bumpversion`
+- Build a new artifact
+- Provide links to extension web stores (manual upload)
+
 ## dependencies
 
 `keyn` uses only one third-part dependency: [`webextension-polyfill`](https://github.com/mozilla/webextension-polyfill). 
