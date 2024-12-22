@@ -2,7 +2,9 @@ name: Build and Test
 
 on:
   push:
-    branches: [ master, trying, staging ]
+    branches: [ master, staging ]
+  pull_request:
+    branches: [ master, main ]
 
 jobs:
   build:
@@ -18,7 +20,3 @@ jobs:
     - run: npm ci
     - run: npx web-ext lint
     - run: SELENIUM_BROWSER=${{ matrix.browser }} npm test
-    - uses: ouzi-dev/commit-status-updater@v1.1.0
-      with:
-        name: "build"
-        status: "success"
