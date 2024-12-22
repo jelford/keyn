@@ -52,8 +52,8 @@ npm install
 Build using Mozilla's [`web-ext`](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/) tool:
 
 ```
-web-ext lint
-web-ext build
+npx web-ext lint
+npx web-ext build
 ```
 
 Output will be under `web-ext-artifacts` and should be compatible with Firefox or

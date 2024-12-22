@@ -5,5 +5,6 @@ module.exports = {
     ignoreFiles: [
         "docs",
         "README.md"
-    ]
+    ],
+    manifestVersion: 3
 }
