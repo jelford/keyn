@@ -18,5 +18,5 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: npm ci
-    - run: npx web-ext lint
+    - run: npx web-ext lint --max-warnings 0
     - run: SELENIUM_BROWSER=${{ matrix.browser }} npm test

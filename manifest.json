@@ -1,5 +1,5 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "keyn",
     "developer": {
         "name": "James Elford",
@@ -8,10 +8,7 @@
     "version": "0.7.0",
     "description": "Navigate the world wide web with the power of your keyboard",
     "background": {
-        "scripts": [
-            "./lib/browser-polyfill.js",
-            "./js/keyn.js"
-        ]
+        "service_worker": "./js/keyn.js"
     },
     "commands": {
         "pick-clickable": {
