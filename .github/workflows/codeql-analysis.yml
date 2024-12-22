@@ -2,7 +2,9 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ master, trying, staging ]
+    branches: [ master, staging ]
+  pull_request:
+    branches: [ master, main ]
   schedule:
     - cron: '16 23 * * 1'
 
@@ -35,3 +37,10 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
+
+    - name: Update commit status
+      uses: sibiraj-s/action-commit-status@v2
+      with:
+        state: 'success'
+        context: 'codeql-analysis'
+        description: 'CodeQL analysis completed successfully'
